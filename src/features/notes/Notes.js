@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { add } from "./notesSlice";
+import { HStack, Input } from "@chakra-ui/react";
 
 export function Notes() {
   const notes = useSelector((state) => state.notes.notesList);
@@ -8,15 +9,15 @@ export function Notes() {
   const [newNotes, setNewNotes] = useState("");
   return (
     <>
-      <div>
-        <input
+      <HStack>
+        <Input
           value={newNotes}
           onChange={(e) => setNewNotes(e.target.value)}
-        ></input>
+        ></Input>
         <button onClick={() => dispatch(add(newNotes))}>
           Добавить заметку
         </button>
-      </div>
+      </HStack>
 
       {notes.map((n) => {
         return <div>{n}</div>;

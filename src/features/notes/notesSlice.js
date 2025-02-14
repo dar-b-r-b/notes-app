@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
 
 export const notesSlice = createSlice({
   name: "notes",
   initialState: {
-    notesList: [],
+    notesList: [{ id: "0", text: "Какой-то важный текст заметки" }],
   },
   reducers: {
     add: (state, action) => {
-      state.notesList.push(action.payload);
+      if (action.payload !== "") {
+        state.notesList.push({ id: uuidv4(), text: action.payload });
+      }
+      return;
     },
   },
 });

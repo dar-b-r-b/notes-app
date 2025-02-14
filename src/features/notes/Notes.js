@@ -24,7 +24,12 @@ export function Notes() {
             value={newNotes}
             onChange={(e) => setNewNotes(e.target.value)}
           ></Textarea>
-          <Button onClick={() => dispatch(add(newNotes))}>
+          <Button
+            onClick={() => {
+              dispatch(add(newNotes));
+              setNewNotes("");
+            }}
+          >
             Добавить заметку
           </Button>
         </HStack>

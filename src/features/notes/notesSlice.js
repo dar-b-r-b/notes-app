@@ -7,13 +7,21 @@ export const notesSlice = createSlice({
     notesList: [{ id: "0", text: "Какой-то важный текст заметки" }],
   },
   reducers: {
-    add: (state, action) => {
+    addNote: (state, action) => {
       if (action.payload !== "") {
         state.notesList.push({ id: uuidv4(), text: action.payload });
       }
       return;
     },
+    deleteNote: (state, action) => {
+      console.log("уdаление редюсер");
+      //filter((n) => n.id !== action.payload);
+      state.notesList.splice(
+        state.notesList.findIndex((n) => n.id === action.payload),
+        1
+      );
+    },
   },
 });
-export const { add } = notesSlice.actions;
+export const { addNote, deleteNote } = notesSlice.actions;
 export default notesSlice.reducer;

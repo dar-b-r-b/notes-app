@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { add } from "./notesSlice";
+import { addNote, deleteNote } from "./notesSlice";
 import {
   HStack,
   Textarea,
@@ -26,7 +26,7 @@ export function Notes() {
           ></Textarea>
           <Button
             onClick={() => {
-              dispatch(add(newNotes));
+              dispatch(addNote(newNotes));
               setNewNotes("");
             }}
           >
@@ -40,7 +40,15 @@ export function Notes() {
             return (
               <Card.Root key={n.id} ml="3" mt="5" maxWidth="250px">
                 <HStack>
-                  <IconButton aria-label="Search database" variant="plain">
+                  <IconButton
+                    aria-label="Search database"
+                    variant="plain"
+                    onClick={() => {
+                      console.log("click");
+                      dispatch(deleteNote(n.id));
+                      console.log(n.id, n.text);
+                    }}
+                  >
                     <AiOutlineDelete />
                   </IconButton>
                   <IconButton aria-label="Search database" variant="plain">

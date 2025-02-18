@@ -15,13 +15,20 @@ export const notesSlice = createSlice({
     },
     deleteNote: (state, action) => {
       console.log("уdаление редюсер");
-      //filter((n) => n.id !== action.payload);
       state.notesList.splice(
         state.notesList.findIndex((n) => n.id === action.payload),
         1
       );
     },
+    editNote: (state, action) => {
+      const { id, editableNote } = action.payload;
+      console.log(action.payload);
+      const noteIndex = state.notesList.findIndex((n) => n.id === id);
+      if (noteIndex !== -1) {
+        state.notesList[noteIndex].text = editableNote;
+      }
+    },
   },
 });
-export const { addNote, deleteNote } = notesSlice.actions;
+export const { addNote, deleteNote, editNote } = notesSlice.actions;
 export default notesSlice.reducer;

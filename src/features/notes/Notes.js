@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addNote, deleteNote } from "./notesSlice";
+import { addNote, deleteNote, editNote } from "./notesSlice";
 import {
   HStack,
   Textarea,
@@ -10,12 +10,15 @@ import {
   IconButton,
   Separator,
 } from "@chakra-ui/react";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 
 export function Notes() {
   const notes = useSelector((state) => state.notes.notesList);
   const dispatch = useDispatch();
   const [newNotes, setNewNotes] = useState("");
+  const [editableNote, setEditableNote] = useState("");
+  const [visibleId, setVisibleId] = useState(null);
+
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -41,7 +44,7 @@ export function Notes() {
               <Card.Root key={n.id} ml="3" mt="5" maxWidth="250px">
                 <HStack>
                   <IconButton
-                    aria-label="Search database"
+                    aria-label="delete"
                     variant="plain"
                     onClick={() => {
                       console.log("click");
@@ -51,8 +54,26 @@ export function Notes() {
                   >
                     <AiOutlineDelete />
                   </IconButton>
-                  <IconButton aria-label="Search database" variant="plain">
+                  <IconButton
+                    aria-label="edit"
+                    variant="plain"
+                    onClick={() => {
+                      setVisibleId(n.id);
+                      setEditableNote(n.text);
+                    }}
+                  >
                     <AiOutlineEdit />
+                  </IconButton>
+                  <IconButton
+                    variant="plain"
+                    visibility={visibleId === n.id ? "visible" : "hidden"}
+                    onClick={() => {
+                      console.log(editableNote);
+                      dispatch(editNote({ id: n.id, editableNote }));
+                      setVisibleId(null);
+                    }}
+                  >
+                    <AiOutlineSave />
                   </IconButton>
                 </HStack>
                 <Separator />
@@ -60,8 +81,23 @@ export function Notes() {
                   color="fg.muted"
                   wordWrap="break-word"
                   whiteSpace="normal"
+                  p="8"
                 >
-                  {n.text}
+                  {visibleId === n.id ? (
+                    <Textarea
+                      value={editableNote}
+                      variant="flushed"
+                      resize="both"
+                      p="2"
+                      onChange={(e) => {
+                        setEditableNote(e.target.value);
+                      }}
+                    >
+                      {n.text}
+                    </Textarea>
+                  ) : (
+                    n.text
+                  )}
                 </Card.Body>
               </Card.Root>
             );
